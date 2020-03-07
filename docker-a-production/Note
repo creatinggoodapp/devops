@@ -20,7 +20,9 @@ app dockerize
 
 
 
-    Ex.: #vim Dockerfile
+    Ex.: 
+    #vim Dockerfile
+    
     FROM alpine
     LABEL mainainer="abc@gmail.com"
     RUN apk add --update nodejs nodejs-npm
@@ -29,5 +31,41 @@ app dockerize
     EXPOSE 8080
     ENTRYPOINT ["node,"./app.js"]
         
-        #docker image build -t psweb .
+    #docker image build -t psweb . // -t(tag), push image onto local
+    or 
+    #docker image build -t psweb https://github.com/nigelpoulton/psweb.git // push image onto git
+
+> Multi-stage Builds
+    start with small images vs. bloated images (too many packages)
+    Ex: mulitstage build in one Dockerfile
+    -----------------
+    FROM node:latest AS storefront
+    WORKDIR /usr/src/atsea/app/react-app
+    COPY react-app .
+    RUN npn install
+    RUN npn run build
+
+    FROM maven:latest AS appserver
+    WORKDIR /usr/src/atsea
+    COPY pom.xml .
+    RUN mvn -B -f pom.xml -s /usr/share/maven/ref/setting-docker.xml dependency:resolve
+    COPY . .
+    RUN mvn -B -s /usr/share/maven/ref/setting-docker.xml package -DskipTests
+
+    FROM java:8-jdk-alpine AS production
+    RUN adduser -Dh /home/gordon gordon
+    WORKDIR /static
+    COPY --from=storefront /usr/src/atsea/app/react-app/build/ .
+    WORKDIR /app
+
+    !!! copy from above image
+    COPY --from=appserver /usr/src/atsea/target/AtSea-0.0.1-SNAPSHOT.jar .
+    ENTRYPOINT ["java","-jar", "/app/AtSea-0.0.1-SNAPSHOT.jar"]
+    CMD ["--spring.profiles.active=postres"]
+
+
+
+
+
+
 
