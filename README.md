@@ -1,3 +1,5 @@
-# devops
-docker, scripting, cd/ci...
-Document - Reference - scripts
+- ABOUT = what is this, introduction
+- QUICKSTART = how to make it run (basic env. system ready)
+- HOWTO = steps, instruction, component list
+- NOTE = caution, not cli/ steps here
+-  
