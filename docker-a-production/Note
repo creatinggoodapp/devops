@@ -1,0 +1,33 @@
+Ref. 
+PLURALSIGHT: 
+- Docker production using AWS (trading app)
+
+- docker deep dive
+// get docker run, with comfortable
+
+
+- continuous delivery using docker and ansible
+// fast-track app from dev to prod. bay automation tasks with Docker and ansible
+ 
+----------------------
+app dockerize
+> docker file
+    instruction for building images
+    <INSTRUCTION> value
+    FROM always first instruction
+    COPY src des
+    ENTRYPOINT default app for image/container, 
+
+
+
+    Ex.: #vim Dockerfile
+    FROM alpine
+    LABEL mainainer="abc@gmail.com"
+    RUN apk add --update nodejs nodejs-npm
+    COPY . /src
+    RUN npm install
+    EXPOSE 8080
+    ENTRYPOINT ["node,"./app.js"]
+        
+        #docker image build -t psweb .
+
